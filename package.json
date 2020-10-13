@@ -18,12 +18,14 @@
   "license": "ISC",
   "dependencies": {
     "d3": "^6.2.0",
+    "simplex-noise": "^2.4.0",
     "three": "^0.121.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.11.5",
+    "@types/node": "^14.11.8",
     "autoprefixer": "^9.8.6",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",

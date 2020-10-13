@@ -11,9 +11,16 @@
   </head>
 
   <body>
-    <input type="file" id="thefile" accept="audio/*" />
-    <canvas id="canvas"></canvas>
-    <audio id="audio" controls></audio>
+    <div id="content">
+      
+      <label for="thefile" class='file'>Pick a Song!
+        <input type="file" id="thefile" accept="audio/*" />
+      </label>
+      <!-- <canvas id="canvas"></canvas> -->
+      <audio id="audio" controls></audio>
+      <div id="out"></div>
+      
+    </div>
     <script src="./dist/main.js"></script>
 
   </body>
