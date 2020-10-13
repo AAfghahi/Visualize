@@ -1,39 +1,61 @@
-class canvasExample {
-  constructor(props) {
-    this.coords = [10, 10, 150, 100];
-    this.animationDir = 1;
-    this.fillColor = `green`;
-    this.canvas = document.createElement("canvas");
-    this.canvas.width = window.innerWidth * 0.75;
-    this.canvas.height = this.canvas.width / 2;
-    this.ctx = this.canvas.getContext("2d");
-  }
-  createCanvas() {
-    document.body.append(this.canvas);
-  }
-  // drawSquare() {
-  //   this.ctx.fillStyle = this.fillColor;
-  //   this.ctx.fillRect(...this.coords);
-  // }
-  // updateSquare() {
-  //   this.coords = this.coords.map((coord) => (coord += 1 * this.animationDir));
-  // }
+window.onload = function(){
+    const file = document.getElementById('thefile');
+    const audio = document.getElementById('audio');
 
-  // clearSquare() {
-  //   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  // }
+    file.onchange = function(){
+        const files = this.files;
+        audio.src = URL.createObjectURL(files[0]);
+        audio.load();
+        audio.play();
+        const context = new AudioContext();
+        const src = context.createMediaElementSource(audio);
+        const analyser = context.createAnalyser();
 
-  // reverseAnimation() {
-  //   this.animationDir *= -1;
-  // }
-  clearCanvas() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
-  setColor(color) {
-    this.fillColor = color;
-    document.body.style.backgroundColor = color;
-    document.body.style.filter = `brightness(150%)`;
-  }
-}
+        const canvas = document.getElementById('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d');
 
-export default canvasExample;
+        src.connect(analyser);
+        analyser.connect(context.destination);
+        analyser.fftSize = 256;
+
+        const bufferLength = analyser.frequencyBinCount;
+        console.log(bufferLength);
+
+        const dataArray = new Uint8Array(bufferLength);
+
+        const WIDTH = canvas.width;
+        const HEIGHT = canvas.height;
+
+        let barWidth = (WIDTH/ bufferLength) * 2.5;
+        // const barHeight;
+        let x = 0;
+
+        function renderFrame(){
+            requestAnimationFrame(renderFrame);
+
+            x = 0;
+
+            analyser.getByteFrequencyData(dataArray);
+
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+            for (let i = 0; i < bufferLength; i++) {
+                barHeight = dataArray[i];
+                
+                let r = barHeight + (25 * (i/bufferLength));
+                let g = 250 * (i/bufferLength);
+                let b = 50;
+
+                ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+                ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+
+                x += barWidth + 1;
+            }
+        }
+        audio.play();
+    renderFrame();
+    };
+};

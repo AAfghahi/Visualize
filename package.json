@@ -1,5 +1,5 @@
 {
-  "name": "js_project_skeleton",
+  "name": "visualize",
   "version": "1.0.0",
   "description": "skeleton for new JS project",
   "main": "index.js",
@@ -16,7 +16,10 @@
   },
   "author": "mrcjbradley",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "d3": "^6.2.0",
+    "three": "^0.121.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
