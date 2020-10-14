@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 const SimplexNoise = require('simplex-noise');
 const noise = new SimplexNoise();
 
-const vizInit = function(){
+const init = function(){
 	const file = document.getElementById('thefile');
 	const audio = document.getElementById('audio');
 	const fileLabel = document.querySelector('label.file');
@@ -49,17 +49,23 @@ const vizInit = function(){
 		const planeMaterial = new THREE.MeshLambertMaterial({
 			color: 0x63e0d4,
 			side: THREE.DoubleSide,
-		
+			wireframe:true
 		});
 
 	
 
 		// const plane2 = new THREE.Mesh(planeGeometry, planeMaterial);
 		// plane2.rotation.x = -0.5*Math.PI;
-		// plane2.position.set(0,-30, 0);
+		// plane2.position.set(0,-10, 0);
 		// group.add(plane2);
 
-		const floatingCube = new THREE.IcosahedronGeometry(20,5);
+
+		// const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+		// plane.rotation.x = -0.5*Math.PI;
+		// plane.position.set(0,30, 0);
+		// group.add(plane);
+
+		const floatingCube = new THREE.IcosahedronGeometry(15,5);
 		const lamMaterial = new THREE.MeshLambertMaterial({
 			color:0xffffff,
 			wireframe: true,
@@ -67,7 +73,7 @@ const vizInit = function(){
 		});
 
 		const ball = new THREE.Mesh(floatingCube, lamMaterial);
-		ball.position.set(0,0,0);
+		ball.position.set(0,10,0);
 		group.add(ball);
 
 		const innerCube = new THREE.IcosahedronGeometry(8,3);
@@ -76,11 +82,14 @@ const vizInit = function(){
 		});
 
 		const ball2 = new THREE.Mesh(innerCube, lamberMaterial);
-		ball2.position.set(0,0,0);
+		ball2.position.set(0,10,0);
 		group.add(ball2);
 
-		const ambientLight = new THREE.AmbientLight(0x63e0d4);
+		const ambientLight = new THREE.AmbientLight(0x63e0d4, 0.5);
 		scene.add(ambientLight);
+
+		// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+		// scene.add(ambientLight);
 
 		const spotLight = new THREE.SpotLight(0xffffff);
 		spotLight.intensity = 0.55;
@@ -90,11 +99,26 @@ const vizInit = function(){
 		scene.add(spotLight);
 
 		const spotLight2 = new THREE.SpotLight(0x8c1c03);
-		spotLight2.intensity = 0.9;
+		spotLight2.intensity = 0.7;
 		spotLight2.position.set(10, -10, 30);
 		spotLight2.lookAt(ball2);
 		spotLight2.castShadow = true;
 		scene.add(spotLight2);
+
+		const spotLight3 = new THREE.SpotLight(0xFF0000);
+		spotLight3.intensity = 0.7;
+		spotLight3.position.set(-10, -10, 20);
+		spotLight3.lookAt(ball2);
+		spotLight3.castShadow = true;
+		scene.add(spotLight3);
+
+		const spotLight4 = new THREE.SpotLight(0xffffff);
+		spotLight4.intensity = 0.2;
+		spotLight4.position.set(10, -30, 20);
+		spotLight4.lookAt(ball);
+		spotLight4.castShadow = true;
+		scene.add(spotLight4);
+
 
 		scene.add(group);
 
@@ -121,12 +145,16 @@ const vizInit = function(){
 			const upperMaxFr = upperMax / upperHalfArray.length;
 			const upperAvgFr = upperAvg / upperHalfArray.length;
 
-			// makeRoughGround(plane2, modulate(lowerMaxFr, 0, 1, 0.5, 4));
-			
-			makeRoughBall(ball, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
-			makeRoughBall(ball2, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
+			// groundAnimation(plane2, modulate(lowerMaxFr, 0, 1, 0.5, 4));
+			// groundAnimation(plane, modulate(lowerMaxFr, 0, 1, 0.5, 4));
 
-			group.rotation.y += 0.005;
+			
+			ballAnimation(ball, modulate(Math.pow(lowerMaxFr, .5), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
+			ballAnimation(ball2, modulate(Math.pow(lowerAvgFr, 0.8), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
+
+			ball.rotation.y += 0.005;
+			ball2.rotation.y -= 0.005;
+			
 			renderer.render(scene, camera);
 			requestAnimationFrame(render);
 		}
@@ -137,14 +165,14 @@ const vizInit = function(){
 			renderer.setSize(window.innerWidth, window.innerHeight);
 		}
 	
-		function makeRoughBall(mesh, bassFr, treFr) {
+		function ballAnimation(mesh, bassFr, treFr) {
 			mesh.geometry.vertices.forEach(function (vertex, i) {
-				var offset = mesh.geometry.parameters.radius;
-				var amp = 10;
-				var time = window.performance.now();
+				const offset = mesh.geometry.parameters.radius;
+				const amp = 10;
+				const time = window.performance.now();
 				vertex.normalize();
-				var rf = 0.0001;
-				var distance = (offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.x +  time*rf*8, vertex.z + time*rf*9) * amp * treFr;
+				const rf = 0.0001;
+				const distance = (offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.x +  time*rf*8, vertex.z + time*rf*9) * amp * treFr;
 				vertex.multiplyScalar(distance);
 			});
 			mesh.geometry.verticesNeedUpdate = true;
@@ -153,41 +181,41 @@ const vizInit = function(){
 			mesh.geometry.computeFaceNormals();
 		}
 	
-		function makeRoughGround(mesh, distortionFr) {
-			mesh.geometry.vertices.forEach(function (vertex, i) {
-				var amp = 2;
-				var time = Date.now();
-				var distance = (noise.noise2D(vertex.x + time * 0.003, vertex.y + time * 0.0001) + 0) * distortionFr * amp;
-				vertex.z = distance;
-			});
-			mesh.geometry.verticesNeedUpdate = true;
-			mesh.geometry.normalsNeedUpdate = true;
-			mesh.geometry.computeVertexNormals();
-			mesh.geometry.computeFaceNormals();
-		}
+		// function groundAnimation(mesh, distortionFr) {
+		// 	mesh.geometry.vertices.forEach(function (vertex, i) {
+		// 		const amp = 2;
+		// 		const time = Date.now();
+		// 		const distance = (noise.noise2D(vertex.x + time * 0.003, vertex.y + time * 0.0001) + 0) * distortionFr * amp;
+		// 		vertex.z = distance;
+		// 	});
+		// 	mesh.geometry.verticesNeedUpdate = true;
+		// 	mesh.geometry.normalsNeedUpdate = true;
+		// 	mesh.geometry.computeVertexNormals();
+		// 	mesh.geometry.computeFaceNormals();
+		// }
 	
 		audio.play();
 	}
 };
 
-window.onload = vizInit();
+window.onload = init();
 
 document.body.addEventListener('touchend', function(ev) { context.resume(); });
 
 
 
-function fractionate(val, minVal, maxVal) {
+function divide(val, minVal, maxVal) {
     return (val - minVal)/(maxVal - minVal);
 }
 
 function modulate(val, minVal, maxVal, outMin, outMax) {
-    var fr = fractionate(val, minVal, maxVal);
-    var delta = outMax - outMin;
+    const fr = divide(val, minVal, maxVal);
+    const delta = outMax - outMin;
     return outMin + (fr * delta);
 }
 
 function avg(arr){
-    var total = arr.reduce(function(sum, b) { return sum + b; });
+    const total = arr.reduce(function(sum, b) { return sum + b; });
     return (total / arr.length);
 }
 

@@ -1,10 +1,10 @@
 :root{
   --bgColor : rgb(12, 11, 53);
   --bgColorLight : rgb(97, 96, 122);
-  --textColor : rgb(62, 62, 70);
+  --textColor : rgb(244, 244, 248);
   --textColorDark : hsla(242, 36%, 0%, 1);
-  --paperColor: hsla(242, 86%, 44%, 1);
-  --paperColorDark: hsla(242, 86%, 34%, 1);
+  --paperColor: rgb(30, 130, 155);
+  --paperColorDark: rgb(19, 71, 105);
   --shadowColorFaint: hsla(0, 0%, 0%, 0.2);
 }
 
@@ -67,7 +67,6 @@ label.file{
   transform: translate3d(-50%, -50%, 0);
   padding: 1rem 2rem;
   border-radius: 10px;
-  
   background: var(--paperColor);
   color: var(--textColor);
   font-size: 1.25em;
@@ -90,8 +89,9 @@ label.file:active{
 
 label.file.normal{
   transform: translate3d(10%, 50%, 0);
-  padding: 0.2rem 2rem;
+  padding: .75rem 2rem;
   font-size: 1rem;
   top: 0;
   left: 0;
 }
+

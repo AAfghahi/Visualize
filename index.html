@@ -11,6 +11,9 @@
   </head>
 
   <body>
+    <header>
+      <button id= 'button' class='button'>About Me</button>
+    </header>
     <div id="content">
       
       <label for="thefile" class='file'>Pick a Song!
@@ -20,6 +23,26 @@
       <audio id="audio" controls></audio>
       <div id="out"></div>
       
+    </div>
+    <div id= 'myModal' class='modal'>
+
+      <div class= 'modal-content'>
+        <span class= 'close'>&times</span>
+        <div class='modal-words'>
+          <h3 class='modal-title'>Visualize by Arash Afghahi</h3>
+          <div class='modal-text'>
+            
+            Thank you for checking out Visualize, this was created using Javascript in addition to- three.js, Canvas, Web Audio, and the Spotify APIs. If you'd like to know more about me, feel free to check out my:
+          </div>
+          <p>
+            <a class= 'modal-links' href="https://github.com/AAfghahi/Visualize"><img class='github_logo' src='src/images/github.png'/>  Github </a>
+          </p>
+          <p>
+            <a class= 'modal-links' href="https://www.linkedin.com/in/arash-afghahi-4aa05193/"><img class='linked_logo' src='/src/images/linkedin.png'/>  LinkedIn</a> 
+          </p>
+          
+        </div>
+      </div>
     </div>
     <script src="./dist/main.js"></script>
 
