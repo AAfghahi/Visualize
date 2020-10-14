@@ -7,6 +7,10 @@ const init = function(){
 	const file = document.getElementById('thefile');
 	const audio = document.getElementById('audio');
 	const fileLabel = document.querySelector('label.file');
+	let changer = true;
+	let i = 0;
+	
+	
 
 	document.onload = function(e){
 		console.log(e);
@@ -26,12 +30,13 @@ const init = function(){
 	};
 
 	function play(){
+		const colors = [0xffffff, 0x63e0d4, 0xFF0000, 0x808000, 0xF39C12, 0x0E6251,  0xFFA233, 0xFFD133, 0xE6FF33 ];
 		const context = new AudioContext();
 		const src = context.createMediaElementSource(audio);
 		const analyser = context.createAnalyser();
 		src.connect(analyser);
 		analyser.connect(context.destination);
-		analyser.fftSize = 512;
+		analyser.fftSize = 2048;
 		const bufferLength = analyser.frequencyBinCount;
 		const dataArray = new Uint8Array(bufferLength);
 
@@ -65,7 +70,7 @@ const init = function(){
 		// plane.position.set(0,30, 0);
 		// group.add(plane);
 
-		const floatingCube = new THREE.IcosahedronGeometry(15,5);
+		const floatingCube = new THREE.IcosahedronGeometry(17,5);
 		const lamMaterial = new THREE.MeshLambertMaterial({
 			color:0xffffff,
 			wireframe: true,
@@ -76,20 +81,19 @@ const init = function(){
 		ball.position.set(0,10,0);
 		group.add(ball);
 
-		const innerCube = new THREE.IcosahedronGeometry(8,3);
+		const innerCube = new THREE.IcosahedronGeometry(9,3);
 		const lamberMaterial = new THREE.MeshLambertMaterial({
-			color:0xFCF4A3
+			color:colors[0]
 		});
 
 		const ball2 = new THREE.Mesh(innerCube, lamberMaterial);
 		ball2.position.set(0,10,0);
 		group.add(ball2);
 
-		const ambientLight = new THREE.AmbientLight(0x63e0d4, 0.5);
+		const ambientLight = new THREE.AmbientLight(colors[0], 0.5);
 		scene.add(ambientLight);
 
-		// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-		// scene.add(ambientLight);
+
 
 		const spotLight = new THREE.SpotLight(0xffffff);
 		spotLight.intensity = 0.55;
@@ -106,8 +110,8 @@ const init = function(){
 		scene.add(spotLight2);
 
 		const spotLight3 = new THREE.SpotLight(0xFF0000);
-		spotLight3.intensity = 0.7;
-		spotLight3.position.set(-10, -10, 20);
+		spotLight3.intensity = 0.5;
+		spotLight3.position.set(-10, -10, 10);
 		spotLight3.lookAt(ball2);
 		spotLight3.castShadow = true;
 		scene.add(spotLight3);
@@ -125,7 +129,13 @@ const init = function(){
 		document.getElementById('out').appendChild(renderer.domElement);
 
 		window.addEventListener('resize', onWindowResize, false);
+		window.addEventListener('click', onMouseClick);
+		window.addEventListener('keydown', ()=>{
+			 changeChanger();
+			colorChanger();
+		});
 
+		colorChanger();
 		render();
 
 		function render(){
@@ -134,7 +144,7 @@ const init = function(){
 			const lowerHalfArray = dataArray.slice(0, (dataArray.length/2) - 1);
 			const upperHalfArray = dataArray.slice((dataArray.length/2) - 1, dataArray.length - 1);
 
-			const overallAvg = avg(dataArray);
+			
 			const lowerMax = max(lowerHalfArray);
 			const lowerAvg = avg(lowerHalfArray);
 			const upperMax = max(upperHalfArray);
@@ -149,13 +159,16 @@ const init = function(){
 			// groundAnimation(plane, modulate(lowerMaxFr, 0, 1, 0.5, 4));
 
 			
-			ballAnimation(ball, modulate(Math.pow(lowerMaxFr, .5), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
-			ballAnimation(ball2, modulate(Math.pow(lowerAvgFr, 0.8), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
+			ballAnimation(ball, modulate(Math.pow(lowerMaxFr, .5), 0, 1, 0, 8), modulate(upperMaxFr, 0, 1, 0, 4));
+			ballAnimation(ball2, modulate(Math.pow(lowerAvgFr, .4), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
 
 			ball.rotation.y += 0.005;
 			ball2.rotation.y -= 0.005;
 			
 			renderer.render(scene, camera);
+			
+			
+			
 			requestAnimationFrame(render);
 		}
 
@@ -164,21 +177,39 @@ const init = function(){
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 		}
+
+		function colorChanger(){
+			if (changer === true){
+				ambientLight.color = new THREE.Color(colors[0]);
+				colors.unshift(colors.pop());
+				// requestAnimationFrame(colorChanger);
+				setTimeout(colorChanger, 750);
+			}
+		}
+
+		function changeChanger(){
+			changer = !changer;
+		}
+
+		function onMouseClick(){
+			ambientLight.color = new THREE.Color(colors[i]);
+			i = (i +1)% colors.length;
+		}
 	
-		function ballAnimation(mesh, bassFr, treFr) {
-			mesh.geometry.vertices.forEach(function (vertex, i) {
-				const offset = mesh.geometry.parameters.radius;
+		function ballAnimation(ball, bass, tre) {
+			ball.geometry.vertices.forEach(function (vertex, i) {
+				const offset = ball.geometry.parameters.radius;
 				const amp = 10;
 				const time = window.performance.now();
 				vertex.normalize();
 				const rf = 0.0001;
-				const distance = (offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.x +  time*rf*8, vertex.z + time*rf*9) * amp * treFr;
+				const distance = (offset + bass ) + noise.noise3D(vertex.x + time *rf*7, vertex.x +  time*rf*8, vertex.z + time*rf*9) * amp * tre;
 				vertex.multiplyScalar(distance);
 			});
-			mesh.geometry.verticesNeedUpdate = true;
-			mesh.geometry.normalsNeedUpdate = true;
-			mesh.geometry.computeVertexNormals();
-			mesh.geometry.computeFaceNormals();
+			ball.geometry.verticesNeedUpdate = true;
+			ball.geometry.normalsNeedUpdate = true;
+			ball.geometry.computeVertexNormals();
+			ball.geometry.computeFaceNormals();
 		}
 	
 		// function groundAnimation(mesh, distortionFr) {
@@ -215,10 +246,11 @@ function modulate(val, minVal, maxVal, outMin, outMax) {
 }
 
 function avg(arr){
-    const total = arr.reduce(function(sum, b) { return sum + b; });
+	let total = 0
+	for(let i = 0; i < arr.length; i++){total += arr[i]}
     return (total / arr.length);
 }
 
 function max(arr){
-    return arr.reduce(function(a, b){ return Math.max(a, b); })
+    return Math.max(...arr)
 }
