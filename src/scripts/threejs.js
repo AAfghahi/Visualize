@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 const SimplexNoise = require('simplex-noise');
 const noise = new SimplexNoise();
+
 
 const init = function(){
 	const file = document.getElementById('thefile');
@@ -183,7 +183,7 @@ const init = function(){
 				ambientLight.color = new THREE.Color(colors[0]);
 				colors.unshift(colors.pop());
 				// requestAnimationFrame(colorChanger);
-				setTimeout(colorChanger, 750);
+				setTimeout(colorChanger, 1500);
 			}
 		}
 
@@ -194,6 +194,7 @@ const init = function(){
 		function onMouseClick(){
 			ambientLight.color = new THREE.Color(colors[i]);
 			i = (i +1)% colors.length;
+			console.log(tempo);
 		}
 	
 		function ballAnimation(ball, bass, tre) {
