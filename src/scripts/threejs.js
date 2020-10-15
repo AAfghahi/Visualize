@@ -8,9 +8,9 @@ const init = function(){
 	const audio = document.getElementById('audio');
 	const fileLabel = document.querySelector('label.file');
 	let changer = true;
+	let beat = 0;
 	let i = 0;
-	
-	
+	let show = false;
 
 	document.onload = function(e){
 		console.log(e);
@@ -130,13 +130,21 @@ const init = function(){
 
 		window.addEventListener('resize', onWindowResize, false);
 		window.addEventListener('click', onMouseClick);
-		window.addEventListener('keydown', ()=>{
-			 changeChanger();
-			colorChanger();
+		window.addEventListener('keydown', (e)=>{
+			if(e.key === 'a'){
+				changeChanger();
+				colorChanger();
+			}else if (e.key === "1"){
+				show = true;
+			}else if (e.key === '2' || '3'){
+				show = false;
+			}
+			
 		});
 
 		colorChanger();
 		render();
+		
 
 		function render(){
 			analyser.getByteFrequencyData(dataArray);
@@ -154,7 +162,7 @@ const init = function(){
 			const lowerAvgFr = lowerAvg / lowerHalfArray.length;
 			const upperMaxFr = upperMax / upperHalfArray.length;
 			const upperAvgFr = upperAvg / upperHalfArray.length;
-
+			beat = lowerAvgFr;
 			// groundAnimation(plane2, modulate(lowerMaxFr, 0, 1, 0.5, 4));
 			// groundAnimation(plane, modulate(lowerMaxFr, 0, 1, 0.5, 4));
 
@@ -183,7 +191,13 @@ const init = function(){
 				ambientLight.color = new THREE.Color(colors[0]);
 				colors.unshift(colors.pop());
 				// requestAnimationFrame(colorChanger);
-				setTimeout(colorChanger, 1500);
+				if (modulate(Math.pow(beat, 1.1), 0, 1, 0, 16) < 500){
+					setTimeout(colorChanger, 750);	
+				}else{
+					setTimeout(colorChanger, modulate(Math.pow(beat, 1.1), 0, 1, 0, 16));
+				}
+
+			
 			}
 		}
 
@@ -194,7 +208,6 @@ const init = function(){
 		function onMouseClick(){
 			ambientLight.color = new THREE.Color(colors[i]);
 			i = (i +1)% colors.length;
-			console.log(tempo);
 		}
 	
 		function ballAnimation(ball, bass, tre) {
