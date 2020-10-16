@@ -31,7 +31,7 @@ const init = function(){
 	};
 
 	function demoSong(){
-		const demo = "/../../dist/media/Against All Logic - This Old House Is All I Have.mp3";
+		const demo = "https://github.com/AAfghahi/Visualize/blob/master/dist/media/Against%20All%20Logic%20-%20This%20Old%20House%20Is%20All%20I%20Have.mp3?raw=true";
 		audio.src = demo;
 		button.classList.add('normal');
 		fileLabel.classList.add('normal');
