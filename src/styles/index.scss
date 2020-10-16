@@ -95,3 +95,38 @@ label.file.normal{
   left: 0;
 }
 
+.demo{
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  border:none;
+  transform: translate3d(-50%, -50%, 0);
+  padding: 1rem 2.3rem;
+  border-radius: 10px;
+  background: var(--paperColor);
+  color: var(--textColor);
+  font-size: 1.25em;
+  font-weight: 700;
+  box-shadow: 0 20px 60px var(--shadowColorFaint);
+
+  cursor: pointer;
+}
+
+.demo:active{
+  background: var(--paperColorDark);
+  transform: translate(-50%, -45%);
+}
+
+.demo.normal{
+  transform: translate(130%, 50%);
+  padding: .77rem 2.1rem;
+  font-size: 1rem;
+  top: 0;
+  left: 0;
+}
+
+.demo:hover{
+  background: var(--paperColorDark);
+
+}

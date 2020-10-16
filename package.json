@@ -20,6 +20,7 @@
     "d3": "^6.2.0",
     "simplex-noise": "^2.4.0",
     "three": "^0.121.1",
+    "three-orbit-controls": "^82.1.0",
     "web-audio-beat-detector": "^8.0.31"
   },
   "devDependencies": {
