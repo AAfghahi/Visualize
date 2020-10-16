@@ -31,14 +31,13 @@ const init = function(){
 	};
 
 	function demoSong(){
-		const demo = 'https://drive.google.com/file/d/16jw71ldcScThi0r7eUyy_swbs7-7fOgF/view?usp=sharing';
+		const demo = '/../../dist/audio/Against All Logic - This Old House Is All I Have.mp3';
 		audio.src = demo;
 		button.classList.add('normal');
 		fileLabel.classList.add('normal');
 		
 	}
 
-	
 
 	document.getElementById('secondfile').onclick = function(){
 		demoSong();
