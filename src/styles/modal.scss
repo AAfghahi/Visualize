@@ -57,6 +57,29 @@
     transform: translate3d(-50%, -55%, 0);
 }
 
+.info-button{
+
+    float:right;
+    margin-top:2.3%;
+    left:95%;
+    background: var(--paperColor);
+    color: var(--textColor);
+    font-size: 1em;
+    font-weight: 700;
+    border:none;
+    box-shadow: 0 20px 60px var(--shadowColorFaint);
+    transform: translate3d(-50%, -50%, 0);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.info-button:hover{
+    background: var(--paperColorDark);
+    transform: translate3d(-50%, -55%, 0);
+}
+
+
 .linked_logo{
     margin-top: 5px;
     height:20px;
@@ -91,4 +114,8 @@ p{
 
 .modal-text{
     line-height:1.75em;
+}
+
+.modal-list{
+    list-style: none;
 }

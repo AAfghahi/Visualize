@@ -80,21 +80,31 @@ export function sphere(){
 
     const spotLight4 = new THREE.SpotLight(0xffffff);
     spotLight4.intensity = 0.2;
-    spotLight4.position.set(10, -30, 20);
+    spotLight4.position.set(10, -30, -20);
     spotLight4.lookAt(ball);
     spotLight4.castShadow = true;
     scene.add(spotLight4);
     scene.add(group);
 
+    const spotLight5 = new THREE.SpotLight(0xFF0000);
+    spotLight5.intensity = 0.5;
+    spotLight5.position.set(-10, 30, -10);
+    spotLight5.lookAt(ball2);
+    spotLight5.castShadow = true;
+    scene.add(spotLight5);
+
+
     document.getElementById('out').appendChild(renderer.domElement);
 
     window.addEventListener('resize', onWindowResize, false);
-    window.addEventListener('click', onMouseClick);
     window.addEventListener('keydown', (e)=>{
        
         if(e.key === 'a'){
             changeChanger();
             colorChanger();
+        }
+        else if(e.key === 'c'){
+            onMouseClick();
         }
     });
    

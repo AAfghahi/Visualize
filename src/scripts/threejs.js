@@ -16,10 +16,11 @@ const init = function(){
 		console.log(e);
 		audio.play();
 		sphere();
-	}
+	};
 
 	file.onchange = function(){
 		fileLabel.classList.add('normal');
+		button.classList.add('normal');
 		audio.classList.add('active');
 		const files = this.files;
 
