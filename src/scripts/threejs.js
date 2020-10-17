@@ -31,7 +31,7 @@ const init = function(){
 	};
 
 	function demoSong(){
-		const demo = "/../../dist/media/song.mp3";
+		const demo = "https://raw.githubusercontent.com/AAfghahi/Visualize/master/dist/media/song.mp3";
 		audio.src = demo;
 		button.classList.add('normal');
 		fileLabel.classList.add('normal');
