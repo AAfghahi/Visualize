@@ -1,7 +1,7 @@
 // import * as THREE from 'three';
 // const SimplexNoise = require('simplex-noise');
 // const noise = new SimplexNoise();
-
+const cors = require('cors');
 import {sphere} from './sphere';
 
 
@@ -10,7 +10,7 @@ const init = function(){
 	let audio = document.getElementById('audio');
 	const fileLabel = document.querySelector('label.file');
 	const button = document.getElementById('secondfile');
-	
+
 
 	document.onload = function(e){
 		console.log(e);
@@ -31,8 +31,9 @@ const init = function(){
 	};
 
 	function demoSong(){
-		const demo = "https://github.com/AAfghahi/Visualize/blob/master/dist/media/song.mp3?raw=true";
-		audio.src = demo;
+		
+		audio.crossOrigin= 'anonymous';
+		audio.src = 'https://raw.githubusercontent.com/AAfghahi/Visualize/master/dist/media/song.mp3';
 		button.classList.add('normal');
 		fileLabel.classList.add('normal');
 		

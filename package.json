@@ -17,6 +17,7 @@
   "author": "mrcjbradley",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "d3": "^6.2.0",
     "simplex-noise": "^2.4.0",
     "three": "^0.121.1",

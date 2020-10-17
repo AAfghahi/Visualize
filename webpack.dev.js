@@ -9,4 +9,5 @@ module.exports = merge(common, {
     watchContentBase: true,
     open: "google-chrome", // use "google-chrome" for PC
   },
+  
 });
