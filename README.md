@@ -35,9 +35,9 @@ Visualize is a Sound Visualizer using Canvas, Web Audio, and three.js. It allows
         ball.geometry.computeVertexNormals();
         ball.geometry.computeFaceNormals();
     }
-}
 
-### USer Manipulation 
+
+### User Manipulation 
 
 + Users are able to change the colors of the sphere by pressing 'c' and toggle the auto color shift by pressing 'a.' 
 + There are also orbital controls that allow you to use your mouse to rotate the screen and to zoom in and out of the image.
