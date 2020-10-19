@@ -1,6 +1,6 @@
 ## Visualize
 
-Visualize is a Sound Visualizer using Canvas, Web Audio, and three.js. It allows you to load up any song that you wish, or use the demo song provided, to see the 3D object respond to the Bass and Treble frequency. 
+Visualize is a Sound Visualizer using Canvas, Web Audio, and three.js. It allows you to load up any song that you wish, or use the demo song provided, to see the 3D object respond to the Bass and Treble frequency. You can find the live project here: https://aafghahi.github.io/Visualize/
 
 ## Technologies Used
 + Javascript
